@@ -20,29 +20,31 @@ mongoose.connect(mongoDB)
 mongoose.Promise = Promise
 const db: Connection = mongoose.connection
 
-db.on("connect", console.log.bind(console, "Connected to MongoDB"))
+db.on("connected", console.log.bind(console, "Connected to MongoDB"))
 db.on("error", console.error.bind(console, "Connection to DB failed"))
 
 
 // Cors
-const corsOptions: CorsOptions = {
-    origin: "http://127.0.0.1:3000",
-    optionsSuccessStatus: 200,
+if (process.env.NODE_ENV === "development") {
+    const corsOptions: CorsOptions = {
+        origin: "http://127.0.0.1:3000/",
+        optionsSuccessStatus: 200
+    };
+    app.use(cors(corsOptions));
 }
 
 
 // APP
-// app.use(cors(corsOptions))
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
-app.use(morgan("dev"))
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use(morgan("dev"));
 
 
 // routes
-app.use("/api", bookRouter)
+app.use("/", bookRouter);
 
 
 // startup
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
-})
+    console.log(`Server running on port ${port}`);
+});

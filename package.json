@@ -15,5 +15,7 @@
   "description": "",
   "devDependencies": {
     "dotenv": "^16.4.7"
+  },
+  "dependencies": {
   }
 }
